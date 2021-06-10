@@ -52,6 +52,7 @@ public class RunMatsimTest {
 				  "--config:controler.lastIteration", "1"
 			} ;
 			RunMatsim.main( args ) ;
+
 			{
 				Population expected = PopulationUtils.createPopulation( ConfigUtils.createConfig() ) ;
 				PopulationUtils.readPopulation( expected, utils.getInputDirectory() + "/output_plans.xml.gz" );

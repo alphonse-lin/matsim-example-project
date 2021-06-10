@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.matsim:matsim:test-jar:tests:12.0-2019w48-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/matsim/matsim/12.0-2019w48-SNAPSHOT/matsim-12.0-2019w48-20191202.022256-1-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/matsim/matsim/12.0-2019w48-SNAPSHOT/matsim-12.0-2019w48-20191202.022256-1-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/matsim/matsim/12.0-2019w48-SNAPSHOT/matsim-12.0-2019w48-20191202.022256-1-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

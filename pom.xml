@@ -9,6 +9,13 @@
 	<name>MATSim example project</name>
 	<description>MATSim example project</description>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<properties>
 		<!-- release -->
 		<!-- <matsim.version>12.0</matsim.version> -->
@@ -46,6 +53,13 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.14.0</version>
+		</dependency>
+
+
 		<dependency>
 			<!-- This is the matsim "core": -->
 			<groupId>org.matsim</groupId>
@@ -114,6 +128,16 @@
 			<groupId>org.matsim.contrib</groupId>
 			<artifactId>bicycle</artifactId>
 			<version>${matsim.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.5.0</version>
 		</dependency>
 		<!--Dependencies from where stated above to here are added as a service; they can be removed if you don't need them-->
 

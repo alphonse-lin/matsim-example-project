@@ -25,6 +25,9 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.scenario.ScenarioUtils;
+import org.springframework.boot.SpringApplication;
+
+import learning.CreatePopulationUtils;
 
 /**
  * @author nagel
@@ -34,33 +37,41 @@ public class RunMatsim{
 
 	public static void main(String[] args) {
 
-		Config config;
-		if ( args==null || args.length==0 || args[0]==null ){
-			config = ConfigUtils.loadConfig( "scenarios/equil/config.xml" );
-		} else {
-			config = ConfigUtils.loadConfig( args );
-		}
-		config.controler().setOverwriteFileSetting( OutputDirectoryHierarchy.OverwriteFileSetting.deleteDirectoryIfExists );
+		String roadPath="scenarios/berlin/network.xml.gz";
+		String planPath="scenarios/berlin/planGenerates.xml.gz";
+		CreatePopulationUtils.run(roadPath,planPath,500);
 
-		// possibly modify config here
-		
-		// ---
-		
-		Scenario scenario = ScenarioUtils.loadScenario(config) ;
-		
-		// possibly modify scenario here
-		
-		// ---
-		
-		Controler controler = new Controler( scenario ) ;
-		
-		// possibly modify controler here
 
-		controler.addOverridingModule( new OTFVisLiveModule() ) ;
-		
-		// ---
-		
-		controler.run();
+
+////		SpringApplication.run(RunMatsim.class, args);
+//
+//		Config config;
+//		if ( args==null || args.length==0 || args[0]==null ){
+//			config = ConfigUtils.loadConfig( "scenarios/berlin/config.xml" );
+//		} else {
+//			config = ConfigUtils.loadConfig( args );
+//		}
+//		config.controler().setOverwriteFileSetting( OutputDirectoryHierarchy.OverwriteFileSetting.deleteDirectoryIfExists );
+//
+//		// possibly modify config here
+//
+//		// ---
+//
+//		Scenario scenario = ScenarioUtils.loadScenario(config) ;
+//
+//		// possibly modify scenario here
+//
+//		// ---
+//
+//		Controler controler = new Controler( scenario ) ;
+//
+//		// possibly modify controler here
+//
+//		controler.addOverridingModule( new OTFVisLiveModule() ) ;
+//
+//		// ---
+//
+//		controler.run();
 	}
 	
 }

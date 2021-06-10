@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jts-core-1.18.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/lib/jts-core-1.18.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
