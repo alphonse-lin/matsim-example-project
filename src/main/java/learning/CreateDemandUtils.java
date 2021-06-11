@@ -14,11 +14,7 @@ import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
-import org.matsim.api.core.v01.population.Activity;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PopulationWriter;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.gbl.MatsimRandom;
 import org.matsim.core.network.io.MatsimNetworkReader;
@@ -173,8 +169,31 @@ public class CreateDemandUtils {
                 Coord otherc=new Coord(xCoord,yCoord);
 
                 //创建具有特定特征的人
-
+                createStudyAndWork(x,a,homec,workC,wOpenTime,wCloseTime,wType,
+                        studyc,otherc,otype,mode,"studyAndWork");
             }
+
+            //创造没有活动的人（既不工作也不学习）
+            for (int a=1;a<noActivity;a++){
+                String mode="car";
+                //RA地图内住宅分类点
+                Coord homec=drawRandomPointFromGeometry(home);
+                Random rndLine=new Random();
+                //对其他活动点进行排序
+                int otherLine=rndLine.nextInt(OTHERQUANT-1)+1;
+                //点位坐标
+                Double xCoord=Double.parseDouble(otherPoints[otherLine][1]);
+                Double yCoord=Double.parseDouble(otherPoints[otherLine][2]);
+                String otype=otherPoints[otherLine][5];
+                Coord otherc=new Coord(xCoord,yCoord);
+
+                //创建具有特定特征的人
+                createNoActivity(x,a,homec,otherc,otype,mode,"noActivity");
+            }
+
+            PopulationWriter pw=new PopulationWriter(scenario.getPopulation(),
+                    scenario.getNetwork());
+            pw.write(PLANS_FILEOUTPUT);
         }
     }
 
@@ -570,7 +589,6 @@ public class CreateDemandUtils {
         scenario.getPopulation().addPerson(person);
     }
 
-
     /**
      * @description 创建生成工作、学习人的出行链
       * @Param: null
@@ -728,13 +746,55 @@ public class CreateDemandUtils {
 
         if (prob<=32.89){
             person.setSelectedPlan(plan1);
-        }else if(prob>36.44 && prob<=49.18){
+        }else if(prob>32.89 && prob<=65.77){
             person.setSelectedPlan(plan2);
-        }else if(prob>49.18 && prob<=61.93){
+        }else if(prob>65.77 && prob<=82.89){
             person.setSelectedPlan(plan3);
         }else{
             person.setSelectedPlan(plan4);
         }
+
+        //将创建的代理人添加到字段
+        scenario.getPopulation().addPerson(person);
+    }
+
+    /**
+     * @description 创建没有主要活动的人员（仅“其他”类型活动）
+      * @Param: null
+     * @return  
+    */
+    private void createNoActivity(int regadm, int i, Coord coordHome, Coord coordOther,
+                                  String otype, String mode, String type){
+        Id<Person> personId= Id.createPersonId(regadm+type+i);
+        Person person=scenario.getPopulation().getFactory().createPerson(personId);
+        Random rnd=new Random();
+
+        //创建所有计划共用的活动
+        Plan plan=scenario.getPopulation().getFactory().createPlan();
+
+        Activity home1=scenario.getPopulation().getFactory()
+                .createActivityFromCoord("home",coordHome);
+        home1.setEndTime((rnd.nextInt(10)+8)*60*60);
+
+        Activity other=scenario.getPopulation().getFactory()
+                .createActivityFromCoord("o"+otype,coordOther);
+        other.setEndTime(home1.getEndTime()+4*60*60);
+
+        Activity home=scenario.getPopulation().getFactory()
+                .createActivityFromCoord("home",coordHome);
+
+        //在此计划中添加顺序活动
+        plan.addActivity(home1);
+        Leg ho=scenario.getPopulation().getFactory().createLeg(mode);
+        plan.addLeg(ho);
+        plan.addActivity(other);
+        Leg oh=scenario.getPopulation().getFactory().createLeg(mode);
+        plan.addLeg(oh);
+        plan.addActivity(home);
+
+        //将计划添加到此代理人中
+        person.addPlan(plan);
+        person.setSelectedPlan(plan);
 
         //将创建的代理人添加到字段
         scenario.getPopulation().addPerson(person);
